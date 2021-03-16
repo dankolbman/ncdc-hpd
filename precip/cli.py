@@ -25,7 +25,15 @@ parser.add_argument(
     action="store_true",
     help="Whether to show debug messages or not",
 )
-parser.add_argument("command", choices=["download"])
+# The Config idea is sorta half complete but maybe we'd want to be able to
+# specify different configurations at runtime
+# parser.add_argument(
+#     "-c",
+#     "--config",
+#     default=Config,
+#     help="The configuration object to use",
+# )
+parser.add_argument("command", choices=["download", "transform", "analyze"])
 
 
 def run(args):
