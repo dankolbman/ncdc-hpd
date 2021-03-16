@@ -1,1 +1,0 @@
-# NCDC Historical Precipitation Data
