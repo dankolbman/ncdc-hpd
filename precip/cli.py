@@ -25,7 +25,7 @@ parser.add_argument(
     action="store_true",
     help="Whether to show debug messages or not",
 )
-parser.add_argument("command", choices=[])
+parser.add_argument("command", choices=["download"])
 
 
 def run(args):
