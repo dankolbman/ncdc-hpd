@@ -163,6 +163,28 @@ within the same regions and we are not sure of the exact positioning of our
 rain gauges, so the comparison would seem to validate our analysis.
 
 
+## On Data Issues and Unmatched Brackets
+
+As expected, this (hand collected?) dataset covering many decades has some
+warts.
+Perhaps most bothersome is the termination of the brackets.
+
+Documentation says that unmatched brackets are rare, but overall there are:
+28 stations with unmatched deletion brackets
+71 stations with unmatched missing data brackets
+
+There is nothing about how to resolve the issue of missing brackets, so any
+bracket that does not appear to have a matching start or end bracket is
+interpreted as itself being deleted only.
+It's important to note also that the bracket matching is only attempted per
+station as it's assumed that each station provides its own stream. It should
+not be possible for missing brackets in one station to be coincedentally
+terminated by another station.
+
+Further investigation shows that many stations have repeat starts of missing
+data brackets that are unterminated. This seems to indicate that these flags
+are unreliable so they are simply ignored for analysis.
+
 ## Design of a Production Service
 
 The CLI format of this tool doesn't make sense for real-world use.
@@ -197,21 +219,3 @@ The analysis or other consumption of the data will then be done through the
 persistance layer (SQL or otherwise). This maximizes the possible number of
 consumers of the data (data people would rather SQL interface than python cli)
 to ensure it has maximum usability and impact.
-
-## Unmatched Brackets
-
-Documentation says that unmatched brackets are rare, but overall there are:
-28 stations with unmatched deletion brackets
-71 stations with unmatched missing data brackets
-
-There is nothing about how to resolve the issue of missing brackets, so any
-bracket that does not appear to have a matching start or end bracket is
-interpreted as itself being deleted only.
-It's important to note also that the bracket matching is only attempted per
-station as it's assumed that each station provides its own stream. It should
-not be possible for missing brackets in one station to be coincedentally
-terminated by another station.
-
-Further investigation shows that many stations have repeat starts of missing
-data brackets that are unterminated. This seems to indicate that these flags
-are unreliable so they are simply ignored for analysis.
