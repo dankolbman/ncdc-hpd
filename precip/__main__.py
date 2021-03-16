@@ -9,14 +9,20 @@ from precip.etl import StateETL
 
 logger = logging.getLogger(__name__)
 
-parser = argparse.ArgumentParser(description="HPD Tool")
+parser = argparse.ArgumentParser(
+    description="HPD Tool to download. transform, and analyze an HPD dataset."
+)
 parser.add_argument(
     "--states",
     default="AZ",
     type=str,
     nargs="*",
-    help="The state to perform the action for",
+    help=(
+        "The state to perform the action for. Any valid, two letter, "
+        "uppercase state code may be used"
+    ),
     choices=[v.name for v in StateEnum],
+    metavar="",
 )
 parser.add_argument(
     "-v",
