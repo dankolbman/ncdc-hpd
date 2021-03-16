@@ -36,7 +36,7 @@ def download_state(state: StateEnum) -> None:
         )
         raise
 
-    for filename in ftp.nlst():
+    for i, filename in enumerate(ftp.nlst()):
         logger.debug(f"Downloading datafile: {filename}")
         out_path = os.path.join(
             Config.DATA_DIR, f"{state.value:02}", "raw", filename
@@ -51,6 +51,8 @@ def download_state(state: StateEnum) -> None:
             ftp.retrbinary("RETR " + filename, f.write)
 
     ftp.quit()
+
+    logger.info(f"Downloaded {i} data files for '{state.name}'")
 
 
 def extract_data(state: StateEnum) -> None:
@@ -98,9 +100,14 @@ def combine_data(state: StateEnum) -> None:
         os.remove(combine_path)
     except FileNotFoundError:
         pass
+
     Popen(
         f"cat {extract_path}/* >> {combine_path}",
         shell=True,
         stdout=open(os.devnull, "w"),
         stderr=open(os.devnull, "w"),
+    )
+
+    logger.info(
+        f"Combined all data for US state '{state.name}' to  {combine_path}"
     )

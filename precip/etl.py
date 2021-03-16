@@ -46,9 +46,11 @@ class StateETL:
         This will download a full FTP directory of compressed tar archives
         then extract and combine them into one data file.
         """
-        logger.info("Downloading data for US state '{self.state.name}'")
+        logger.info(f"Downloading data for US state '{self.state.name}'")
         download_state(state=self.state)
+        logger.info(f"Extracting data for US state '{self.state.name}'")
         extract_data(state=self.state)
+        logger.info(f"Combining data for US state '{self.state.name}'")
         combine_data(state=self.state)
 
     def transform(self) -> None:
@@ -104,7 +106,7 @@ class StateETL:
 
         # All of the analysis requires data that was not deleted and is of
         # good quality so filter out .
-        df = df[df["Was-Deleted"] is False]
+        df = df[df["Was-Deleted"] == False]
         df = df[df["Data-Value"] != 99999]
         df = df[~df["FLAG1"].fillna("").str.contains("Q")]
 
@@ -124,3 +126,4 @@ class StateETL:
         monthly_precip(df, fig_path=self.analysis_path)
         active_stations(df, fig_path=self.analysis_path)
         average_yearly_by_station(df, fig_path=self.analysis_path)
+        logger.info(f"Saved figures to {self.analysis_path}")
